@@ -145,12 +145,12 @@ app.get("/", (req, res) => {
         if (token.al_dex < 0.99 || token.sat_dex > 1.01 || token.sat_jup > 1.01 || token.sat_jup > 1.01) {
           return `
             <tr>
-              <td>${token.symbol}</td>
-              <td>${token.contract}</td>
-              <td>${token.al_dex}</td>
-              <td>${token.sat_dex}</td>
-              <td>${token.al_jup}</td>
-              <td>${token.sat_jup}</td>
+                <td>${token.symbol}</td>
+                <td>${token.contract}</td>
+                <td>${token.al_dex < 0.99 ? token.al_dex : "-"}</td>
+                <td>${token.sat_dex > 1.01 ? token.sat_dex : "-"}</td>
+                <td>${token.al_jup < 0.99 ? token.al_jup : "-"}</td>
+                <td>${token.sat_jup > 1.01 ? token.sat_jup : "-"}</td>
             </tr>
           `;
         }
