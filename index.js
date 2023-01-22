@@ -142,7 +142,7 @@ app.get("/", (req, res) => {
         <th>Huobi/Jup Ask Ratio</th>
       </tr>
       ${tokens.map(token => {
-        if (token.al < 0.99 || token.sat > 1.01) {
+        if (token.al_dex < 0.99 || token.sat_dex > 1.01 || token.sat_jup > 1.01 || token.sat_jup > 1.01) {
           return `
             <tr>
               <td>${token.symbol}</td>
