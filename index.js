@@ -65,8 +65,8 @@ const tokens = [
   { symbol: "eluusdt", contract: "ELU" },
   { symbol: "likeusdt", contract: "LIKE" },
   { symbol: "snsusdt", contract: "SNS" },
-  { symbol: "KASTAUSDT", contract: "0x235737dbb56e8517391473f7c964db31fa6ef280-polygon" }
-  { symbol: "rocousdt", contract: "0xb2a85C5ECea99187A977aC34303b80AcbDdFa208-avalanche" }
+  { symbol: "KASTAUSDT", contract: "0x235737dbb56e8517391473f7c964db31fa6ef280-polygon" },
+  { symbol: "rocousdt", contract: "0xb2a85C5ECea99187A977aC34303b80AcbDdFa208-avalanche" },
   { symbol: "rocousdt", contract: "0xb2a85C5ECea99187A977aC34303b80AcbDdFa208-avalanche" }
 
 
@@ -135,12 +135,13 @@ setInterval(() => {
               });
             });
           });
-        });  
-      } catch (err) {
-        console.log("Error: " + err.message);
+        });
+      });
+     } catch (err) {
+     console.log("Error: " + err.message);
     }
-});
-}, 30000);
+ });
+ }, 30000);
 
 
 app.get("/", (req, res) => {
@@ -186,5 +187,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
 
