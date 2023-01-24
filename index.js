@@ -110,6 +110,21 @@ setInterval(() => {
                       token.sat_dex = price / ask;
                       token.sat_jup = jupPrice / ask;
                       console.log(token);
+                      // Get the ask and bid prices for the token from Bybit
+                  https.get(`https://api.bybit.com/spot/quote/v1/ticker/24hr?symbol=${token.symbol}`, (res) => {
+                    let data = "";
+                    res.on("data", (chunk) => {
+                        data += chunk;
+                    });
+                    res.on("end", () => {
+                        const json = JSON.parse(data);
+                        const bybit_ask = json.result.bestAskprice;
+                        const bybit_bid = json.result.bestBidprice;
+                        // Calculate the ratio of the Bybit ask price to the BSC price
+                        token.al_bybit = price / bybit_bid;
+                        token.sat_bybit = price / bybit_ask;
+                        console.log(token);
+                      });
                     });
                   });
                });
@@ -140,6 +155,8 @@ app.get("/", (req, res) => {
         <th>Huobi/BSC Ask Ratio</th>
         <th>Jup/Huobi Ask Ratio</th>
         <th>Huobi/Jup Ask Ratio</th>
+        <th>BSC/Bybit Bid Ratio</th>
+        <th>Bybit/BSC Ask Ratio</th>
       </tr>
       ${tokens.map(token => {
         if (token.al_dex < 0.99 || token.sat_dex > 1.01 || token.sat_jup > 1.01 || token.sat_jup > 1.01) {
@@ -151,6 +168,8 @@ app.get("/", (req, res) => {
               <td>${token.sat_dex}</td>
               <td>${token.al_jup}</td>
               <td>${token.sat_jup}</td>
+              <td>${token.al_bybit}</td>
+              <td>${token.sat_bybit}</td>
             </tr>
           `;
         }
@@ -165,7 +184,6 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
 
 
 
