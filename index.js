@@ -132,9 +132,9 @@ setInterval(() => {
                     });
                     res.on("end", () => {
                       const json = JSON.parse(data);
-                      if(!json.result || !json.result.bestAskprice || !json.result.bestBidprice) return;
-                      const bybit_ask = json.result.bestAskprice;
-                      const bybit_bid = json.result.bestBidprice;
+                      if(!json.result || !json.result.bestAskprice[0] || !json.result.bestBidprice[0]) return;
+                      const bybit_ask = json.result.bestAskprice[0];
+                      const bybit_bid = json.result.bestBidprice[0];
                       // Calculate the ratio of the Bybit ask price to the BSC price
                       token.al_bybit = price / bybit_bid;
                       token.sat_bybit = price / bybit_ask;
