@@ -135,20 +135,12 @@ setInterval(() => {
               });
             });
           });
-        } catch (err) {
-          console.log("Error: " + err.message);
-        }
-      });
- }, 30000);
- app.get("/", (req, res) => {
-  res.send("Server is running...");
+        });  
+      } catch (err) {
+        console.log("Error: " + err.message);
+    }
 });
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
+}, 30000);
 
 
 app.get("/", (req, res) => {
@@ -188,6 +180,11 @@ app.get("/", (req, res) => {
       }).join('')}
     </table>
   `);
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 
