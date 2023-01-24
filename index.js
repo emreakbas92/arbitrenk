@@ -139,7 +139,16 @@ setInterval(() => {
           console.log("Error: " + err.message);
         }
       });
-    }, 30000);
+ }, 30000);
+ app.get("/", (req, res) => {
+  res.send("Server is running...");
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
 
 
 app.get("/", (req, res) => {
@@ -179,12 +188,6 @@ app.get("/", (req, res) => {
       }).join('')}
     </table>
   `);
-});
-
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
 });
 
 
