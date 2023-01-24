@@ -147,10 +147,37 @@ app.get("/", (req, res) => {
             <tr>
               <td>${token.symbol}</td>
               <td>${token.contract}</td>
-              <td>${token.al_dex < 0.98 ? '-' : token.al_dex}</td>
-              <td>${token.sat_dex > 1.02 ? '-' : token.sat_dex}</td>
-              <td>${token.al_jup < 0.99 ? '-' : token.al_jup}</td>
-              <td>${token.sat_jup > 1.01 ? '-' : token.sat_jup}</td>
+app.get("/", (req, res) => {
+  res.send(`
+    <h1>Token List</h1>
+    <table>
+      <tr>
+        <th>Symbol</th>
+        <th>Contract Address</th>
+        <th>BSC/Huobi Bid Ratio</th>
+        <th>Huobi/BSC Ask Ratio</th>
+        <th>Jup/Huobi Ask Ratio</th>
+        <th>Huobi/Jup Ask Ratio</th>
+      </tr>
+      ${tokens.map(token => {
+        if (token.al_dex < 0.98 || token.sat_dex > 1.02 || token.sat_jup > 1.01 || token.al_jup < 0.99) {
+          return `
+            <tr>
+              <td>${token.symbol}</td>
+              <td>${token.contract}</td>
+              <td>${token.al_dex < 0.98 ? token.al_dex :'-' }</td>
+              <td>${token.sat_dex > 1.02 ? token.sat_dex :'-' }</td>
+              <td>${token.al_jup < 0.99 ? token.al_jup :'-' }</td>
+              <td>${token.sat_jup > 1.01 ? token.sat_jup :'-' }</td>
+            </tr>
+          `;
+        }
+        return '';
+      }).join('')}
+    </table>
+  `);
+});
+
             </tr>
           `;
         }
