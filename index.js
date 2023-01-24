@@ -65,7 +65,11 @@ const tokens = [
   { symbol: "eluusdt", contract: "ELU" },
   { symbol: "likeusdt", contract: "LIKE" },
   { symbol: "snsusdt", contract: "SNS" },
+  { symbol: "KASTAUSDT", contract: "0x235737dbb56e8517391473f7c964db31fa6ef280-polygon" }
   { symbol: "rocousdt", contract: "0xb2a85C5ECea99187A977aC34303b80AcbDdFa208-avalanche" }
+  { symbol: "rocousdt", contract: "0xb2a85C5ECea99187A977aC34303b80AcbDdFa208-avalanche" }
+
+
 ];
 
 let al, sat;
@@ -192,5 +196,4 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
 
