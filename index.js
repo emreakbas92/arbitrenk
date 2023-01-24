@@ -117,7 +117,8 @@ setInterval(() => {
                         data += chunk;
                     });
                         res.on("end", () => {
-                           const json = JSON.parse(data);
+                        const json = JSON.parse(data);
+                        if(!json.result || !json.result.bestAskprice || !json.result.bestBidprice) return;
                         const bybit_ask = json.result.bestAskprice;
                         const bybit_bid = json.result.bestBidprice;
                         // Calculate the ratio of the Bybit ask price to the BSC price
@@ -130,19 +131,20 @@ setInterval(() => {
                     });
                   });
                });
-             })
-            .on("error", (err) => {
+              });
+            });
+              .on("error", (err) => {
              console.log("Error: " + err.message);
+            });
           });
-        });
-      })
+        })
      .on("error", (err) => {
        console.log("Error: " + err.message);
      });
   } catch (err) {
     console.log("Error: " + err.message);
-  }
-});
+  }}
+);
 }, 30000);
 
 
@@ -190,5 +192,6 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
 
 
