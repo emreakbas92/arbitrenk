@@ -165,10 +165,10 @@ app.get("/", (req, res) => {
             <tr>
               <td>${token.symbol}</td>
               <td>${token.contract}</td>
-              <td>${isNaN(token.al_dex) ? '-' : token.al_dex}</td>
-              <td>${isNaN(token.sat_dex) ? '-' : token.sat_dex}</td>
-              <td>${isNaN(token.al_jup) ? '-' : token.al_jup}</td>
-              <td>${isNaN(token.sat_jup) ? '-' : token.sat_jup}</td>
+              <td>${token.al_dex < 0.98 ? '-' : token.al_dex}</td>
+              <td>${token.sat_dex > 1.02 ? '-' : token.sat_dex}</td>
+              <td>${token.al_jup < 0.99 ? '-' : token.al_jup}</td>
+              <td>${token.sat_jup > 1.01 ? '-' : token.sat_jup}</td>
             </tr>
           `;
         }
