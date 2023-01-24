@@ -64,7 +64,19 @@ const tokens = [
   { symbol: "saousdt", contract: "SAO" },
   { symbol: "eluusdt", contract: "ELU" },
   { symbol: "likeusdt", contract: "LIKE" },
-  { symbol: "snsusdt", contract: "SNS" },
+  { symbol: "GENEUSDT", contract: "GENE" },
+  { symbol: "ZBCUSDT", contract: "ZBC" },
+  { symbol: "REALUSDT", contract: "REAL" },
+  { symbol: "GMTUSDT", contract: "GMT" },
+  { symbol: "FIDAUSDT", contract: "FIDA" },
+  { symbol: "MBSUSDT", contract: "MBS" },
+  { symbol: "1SOLUSDT", contract: "1SOL" },
+  { symbol: "GSTUSDT", contract: "GST" },
+  { symbol: "SHILLUDST", contract: "SHILL" },
+  { symbol: "CWARUSDT", contract: "CWAR" },
+  { symbol: "DFLUSDT", contract: "DFL" },
+  { symbol: "BONKUSDT", contract: "BONK" },
+  { symbol: "MPLXUSDT", contract: "MPLX" },
   { symbol: "KASTAUSDT", contract: "0x235737dbb56e8517391473f7c964db31fa6ef280-polygon" },
   { symbol: "rocousdt", contract: "0xb2a85C5ECea99187A977aC34303b80AcbDdFa208-avalanche" },
   { symbol: "rocousdt", contract: "0xb2a85C5ECea99187A977aC34303b80AcbDdFa208-avalanche" }
@@ -187,4 +199,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
