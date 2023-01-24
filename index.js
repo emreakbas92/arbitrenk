@@ -159,6 +159,8 @@ app.get("/", (req, res) => {
     </table>
   `);
 });
+
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
@@ -253,46 +255,47 @@ setInterval(() => {
 
             // Get the price of the token on the BSC network from Dex.guru
             https
-          .get(`https://api.dex.guru/v1/tokens/${token.contract}`, (res) => {
-            let data = "";
-            res.on("data", (chunk) => {
-              data += chunk;
-            });
-            res.on("end", () => {
-              const json = JSON.parse(data);
-              const price = json.priceUSD;
-
-              // Calculate the ratio of the BSC price to the Huobi bid price
-              al = price / bid;
-
-              // Calculate the ratio of the Huobi ask price to the BSC price
-              sat = price / ask;
-            });
-          })
-          .on("error", (err) => {
-            console.log("Error: " + err.message);
+              .get(`https://api.dex.guru/v1/tokens/${token.contract}`, (res) => {
+                let data = "";
+                res.on("data", (chunk) => {
+                  data += chunk;
+                });
+                res.on("end", () => {
+                  const json = JSON.parse(data);
+                  let price = json.priceUSD;
+                  // Get the price of the token on the BSC network from Jup.ag
+                  https.get(`https://price.jup.ag/v1/price?id=${token.contract}`, (res) => {
+                    let data = "";
+                    res.on("data", (chunk) => {
+                      data += chunk;
+                    });
+                    res.on("end", () => {
+                      const json = JSON.parse(data);
+                      let jupPrice = json.data.price;
+                      // Calculate the ratio of the Huobi ask price to the BSC price
+                      token.al_dex = price / bid;
+                      token.al_jup = jupPrice / bid;
+                      token.sat_dex = price / ask;
+                      token.sat_jup = jupPrice / ask;
+                      console.log(token);
+                    });
+                  });
+               });
+             })
+            .on("error", (err) => {
+             console.log("Error: " + err.message);
           });
-      });
-    })
-    .on("error", (err) => {
-      console.log("Error: " + err.message);
-    });
-} catch (err) {
-  console.log("Error: " + err.message);
-}});
-
-}, 30000);
-app.get("/all", (req, res) => {
-  let tokenList = []
-  tokens.forEach((token) => {
-    if (al < 0.99) {
-      tokenList.push({ symbol: token.symbol, value: al });
-    } else if (sat > 1.01) {
-      tokenList.push({ symbol: token.symbol, value: sat });
-    }
-  });
-  res.send(tokenList);
+        });
+      })
+     .on("error", (err) => {
+       console.log("Error: " + err.message);
+     });
+  } catch (err) {
+    console.log("Error: " + err.message);
+  }
 });
+}, 30000);
+
 
 app.get("/", (req, res) => {
   res.send(`
@@ -301,18 +304,30 @@ app.get("/", (req, res) => {
       <tr>
         <th>Symbol</th>
         <th>Contract Address</th>
+        <th>BSC/Huobi Bid Ratio</th>
+        <th>Huobi/BSC Ask Ratio</th>
+        <th>Jup/Huobi Ask Ratio</th>
+        <th>Huobi/Jup Ask Ratio</th>
       </tr>
-      ${tokens.map(token => `
-        <tr>
-          <td>${token.symbol}</td>
-          <td>${token.contract}</td>
-          <td>${al}</td>
-          <td>${sat}</td>
-        </tr>
-      `).join('')}
+      ${tokens.map(token => {
+        if (token.al_dex < 0.99 || token.sat_dex > 1.01 || token.sat_jup > 1.01 || token.sat_jup > 1.01) {
+          return `
+            <tr>
+              <td>${token.symbol}</td>
+              <td>${token.contract}</td>
+              <td>${token.al_dex}</td>
+              <td>${token.sat_dex}</td>
+              <td>${token.al_jup}</td>
+              <td>${token.sat_jup}</td>
+            </tr>
+          `;
+        }
+        return '';
+      }).join('')}
     </table>
   `);
 });
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
