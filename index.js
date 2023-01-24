@@ -175,18 +175,19 @@ app.get("/", (req, res) => {
       ${tokens.map(token => {
         if (token.al_dex < 0.98 || token.sat_dex > 1.02 || token.sat_jup > 1.01 || token.al_jup < 0.99 || token.al_bybit < 0.98 || token.sat_bybit > 1.02 || token.sat_jupbybit > 1.01 || token.al_jupbybit < 0.99) {
           return `
-            <tr>
-              <td>${token.symbol}</td>
-              <td>${token.contract}</td>
-              <td>${token.al_dex}</td>
-              <td>${token.sat_dex}</td>
-              <td>${token.al_jup}</td>
-              <td>${token.sat_jup}</td>
-              <td>${token.al_bybit}</td>
-              <td>${token.sat_bybit}</td>
-              <td>${token.al_jupbybit}</td>
-              <td>${token.sat_jupbybit}</td>
-            </tr>
+          <tr>
+            <td>${token.symbol}</td>
+            <td>${token.contract}</td>
+            <td>${token.al_dex < 0.98 ? token.al_dex : ''}</td>
+            <td>${token.sat_dex > 1.02 ? token.sat_dex : ''}</td>
+            <td>${token.al_jup < 0.99 ? token.al_jup : ''}</td>
+            <td>${token.sat_jup > 1.01 ? token.sat_jup : ''}</td>
+            <td>${token.al_bybit < 0.98 ? token.al_bybit : ''}</td>
+            <td>${token.sat_bybit > 1.02 ? token.sat_bybit : ''}</td>
+            <td>${token.al_jupbybit < 0.99 ? token.al_jupbybit : ''}</td>
+            <td>${token.sat_jupbybit > 1.01 ? token.sat_jupbybit : ''}</td>
+         </tr>
+        
           `;
         }
         return '';
@@ -199,3 +200,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
