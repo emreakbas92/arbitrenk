@@ -110,27 +110,18 @@ setInterval(() => {
                       token.sat_dex = price / ask;
                       token.sat_jup = jupPrice / ask;
                       console.log(token);
-                    } catch (err) {
-                      console.log("Error: " + err.message);
-                    }
+                    });
                   });
-                }).on("error", (err) => {
-                  console.log("Error: " + err.message);
-                });
-              } catch (err) {
-                console.log("Error: " + err.message);
-              }
-            });
-          }).on("error", (err) => {
-            console.log("Error: " + err.message);
+               });
+             })
+            .on("error", (err) => {
+             console.log("Error: " + err.message);
           });
-        } catch (err) {
-          console.log("Error: " + err.message);
-        }
-      });
-    }).on("error", (err) => {
-      console.log("Error: " + err.message); 
-    });
+        });
+      })
+     .on("error", (err) => {
+       console.log("Error: " + err.message);
+     });
   } catch (err) {
     console.log("Error: " + err.message);
   }
@@ -174,3 +165,5 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
