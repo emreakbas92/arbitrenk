@@ -104,7 +104,6 @@ setInterval(() => {
                   res.on("end", () => {
                     const json = JSON.parse(data);
                     let jupPrice = json.data.price;
-                    if (isNaN(jupPrice)) return;
                     token.al_bybit = price / bybit_bid;
                     token.sat_bybit = price / byit_ask;
                     token.al_jupbybit = jupPrice / bybit_bid;
