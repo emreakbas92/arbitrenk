@@ -6,6 +6,7 @@ const tokens = [
   { symbol: "bbcusdt", contract: "0x37e5da11b6A4DC6d2f7Abe232cDd30B0B8Fc63B1-bsc" },
   { symbol: "bullusdt", contract: "0x9f95e17b2668AFE01F8fbD157068b0a4405Cc08D-polygon" },
   { symbol: "voxelusdt", contract: "0xd0258a3fD00f38aa8090dfee343f10A9D4d30D3F-polygon" },
+  { symbol: "gcoinusdt", contract: "0x071AC29d569a47EbfFB9e57517F855Cb577DCc4C-polygon" },
   { symbol: "zedusdt", contract: "0x5eC03C1f7fA7FF05EC476d19e34A22eDDb48ACdc-polygon" },
   { symbol: "dfxusdt", contract: "0xE7804D91dfCDE7F776c90043E03eAa6Df87E6395-polygon" },
   { symbol: "routeusdt", contract: "0x16ECCfDbb4eE1A85A33f3A9B21175Cd7Ae753dB4-polygon" },
@@ -30,6 +31,7 @@ const tokens = [
   { symbol: "fotausdt", contract: "0x0A4E1BdFA75292A98C15870AeF24bd94BFFe0Bd4-bsc" },
   { symbol: "tlosusdt", contract: "0xb6c53431608e626ac81a9776ac3e999c5556717c-bsc" },
   { symbol: "fiuusdt", contract: "0xef7d50069406a2f5a53806f7250a6c0f17ad9dcd-bsc" },
+  { symbol: "gearusdt", contract: "0xb4404DaB7C0eC48b428Cf37DeC7fb628bcC41B36-bsc" },
   { symbol: "wwyusdt", contract: "0x9ab70e92319f0b9127df78868fd3655fb9f1e322-bsc" },
   { symbol: "tincusdt", contract: "0x05ad6e30a855be07afa57e08a4f30d00810a402e-bsc" },
   { symbol: "arknusdt", contract: "0xaA20c2e278D99f978989dAa4460F933745F862d5-bsc" },
@@ -51,6 +53,7 @@ const tokens = [
   { symbol: "mcrtusdt", contract: "0x4b8285aB433D8f69CB48d5Ad62b415ed1a221e4f-bsc" },
   { symbol: "inrusdt", contract: "0xaB725d0A10C3f24725c89F5765Ae5794a26C1336-bsc" },
   { symbol: "ntusdt", contract: "0xfbcf80ed90856AF0d6d9655F746331763EfDb22c-bsc" },
+  { symbol: "slcusdt", contract: "SLC" },
   { symbol: "diousdt", contract: "DIO" },
   { symbol: "zbcusdt", contract: "ZBC" },
   { symbol: "gmtusdt", contract: "GMT" },
@@ -61,24 +64,8 @@ const tokens = [
   { symbol: "saousdt", contract: "SAO" },
   { symbol: "eluusdt", contract: "ELU" },
   { symbol: "likeusdt", contract: "LIKE" },
-  { symbol: "GENEUSDT", contract: "GENE" },
-  { symbol: "ZBCUSDT", contract: "ZBC" },
-  { symbol: "REALUSDT", contract: "REAL" },
-  { symbol: "GMTUSDT", contract: "GMT" },
-  { symbol: "FIDAUSDT", contract: "FIDA" },
-  { symbol: "MBSUSDT", contract: "MBS" },
-  { symbol: "1SOLUSDT", contract: "1SOL" },
-  { symbol: "GSTUSDT", contract: "GST" },
-  { symbol: "SHILLUDST", contract: "SHILL" },
-  { symbol: "CWARUSDT", contract: "CWAR" },
-  { symbol: "DFLUSDT", contract: "DFL" },
-  { symbol: "BONKUSDT", contract: "BONK" },
-  { symbol: "MPLXUSDT", contract: "MPLX" },
-  { symbol: "KASTAUSDT", contract: "0x235737dbb56e8517391473f7c964db31fa6ef280-polygon" },
-  { symbol: "rocousdt", contract: "0xb2a85C5ECea99187A977aC34303b80AcbDdFa208-avalanche" },
+  { symbol: "snsusdt", contract: "SNS" },
   { symbol: "rocousdt", contract: "0xb2a85C5ECea99187A977aC34303b80AcbDdFa208-avalanche" }
-
-
 ];
 
 let al, sat;
@@ -86,71 +73,60 @@ setInterval(() => {
   tokens.forEach((token) => {
     try {
       // Get the ask and bid prices for the token from Huobi
-      https.get(`https://api.huobi.pro/market/detail/merged?symbol=${token.symbol}`, (res) => {
-        let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
-        res.on("end", () => {
-          const json = JSON.parse(data);
-          if(!json.tick || !json.tick.ask[0] || !json.tick.bid[0]) return;
-          const ask = json.tick.ask[0];
-          const bid = json.tick.bid[0];
+      https
+        .get(`https://api.huobi.pro/market/detail/merged?symbol=${token.symbol}`, (res) => {
+          let data = "";
+          res.on("data", (chunk) => {
+            data += chunk;
+          });
+          res.on("end", () => {
+            const json = JSON.parse(data);
+            if(!json.tick || !json.tick.ask[0] || !json.tick.bid[0]) return;
+            const ask = json.tick.ask[0];
+            const bid = json.tick.bid[0];
 
-          // Get the price of the token on the BSC network from Dex.guru
-          https.get(`https://api.dex.guru/v1/tokens/${token.contract}`, (res) => {
-            let data = "";
-            res.on("data", (chunk) => {
-              data += chunk;
-            });
-            res.on("end", () => {
-              const json = JSON.parse(data);
-              let price = json.priceUSD;
-              // Get the price of the token on the BSC network from Jup.ag
-              https.get(`https://price.jup.ag/v1/price?id=${token.contract}`, (res) => {
+            // Get the price of the token on the BSC network from Dex.guru
+            https
+              .get(`https://api.dex.guru/v1/tokens/${token.contract}`, (res) => {
                 let data = "";
                 res.on("data", (chunk) => {
                   data += chunk;
                 });
                 res.on("end", () => {
                   const json = JSON.parse(data);
-                  let jupPrice = json.data.price;
-                  // Calculate the ratio of the Huobi ask price to the BSC price
-                  token.al_dex = price / bid;
-                  token.al_jup = jupPrice / bid;
-                  token.sat_dex = price / ask;
-                  token.sat_jup = jupPrice / ask;
-                  console.log(token);
-                  // Get the ask and bid prices for the token from Bybit
-                  https.get(`https://api.bybit.com/spot/quote/v1/ticker/24hr?symbol=${token.symbol}`, (res) => {
+                  let price = json.priceUSD;
+                  // Get the price of the token on the BSC network from Jup.ag
+                  https.get(`https://price.jup.ag/v1/price?id=${token.contract}`, (res) => {
                     let data = "";
                     res.on("data", (chunk) => {
                       data += chunk;
                     });
                     res.on("end", () => {
                       const json = JSON.parse(data);
-                      if(!json.result || !json.result.bestAskprice[0] || !json.result.bestBidprice[0]) return;
-                      const bybit_ask = json.result.bestAskprice;
-                      const bybit_bid = json.result.bestBidprice;
-                      // Calculate the ratio of the Bybit ask price to the BSC price
-                      token.al_bybit = price / bybit_bid;
-                      token.sat_bybit = price / bybit_ask;
-                      token.al_jupbybit = jupPrice / bybit_bid
-                      token.sat_jupbybit = jupPrice / bybit_ask
+                      let jupPrice = json.data.price;
+                      // Calculate the ratio of the Huobi ask price to the BSC price
+                      token.al_dex = price / bid;
+                      token.al_jup = jupPrice / bid;
+                      token.sat_dex = price / ask;
+                      token.sat_jup = jupPrice / ask;
                       console.log(token);
                     });
                   });
-                });
-              });
-            });
+               });
+             })
+            .on("error", (err) => {
+             console.log("Error: " + err.message);
           });
         });
-      });
-     } catch (err) {
-     console.log("Error: " + err.message);
-    }
- });
- }, 30000);
+      })
+     .on("error", (err) => {
+       console.log("Error: " + err.message);
+     });
+  } catch (err) {
+    console.log("Error: " + err.message);
+  }
+});
+}, 30000);
 
 
 app.get("/", (req, res) => {
@@ -164,25 +140,17 @@ app.get("/", (req, res) => {
         <th>Huobi/BSC Ask Ratio</th>
         <th>Jup/Huobi Ask Ratio</th>
         <th>Huobi/Jup Ask Ratio</th>
-        <th>BSC/Bybit Bid Ratio</th>
-        <th>Bybit/BSC Ask Ratio</th>
-        <th>Jup/Bybit Bid Ratio</th>
-        <th>Bybit/Jup Ask Ratio</th>
       </tr>
       ${tokens.map(token => {
-        if (token.al_dex < 0.98 || token.sat_dex > 1.02 || token.sat_jup > 1.01 || token.al_jup < 0.99 || token.al_bybit < 0.98 || token.sat_bybit > 1.02 || token.sat_jupbybit > 1.01 || token.al_jupbybit < 0.99) {
+        if (token.al_dex < 0.98 || token.sat_dex > 1.02 || token.sat_jup > 1.01 || token.al_jup < 0.99) {
           return `
             <tr>
               <td>${token.symbol}</td>
               <td>${token.contract}</td>
-              <td>${token.al_dex}</td>
-              <td>${token.sat_dex}</td>
-              <td>${token.al_jup}</td>
-              <td>${token.sat_jup}</td>
-              <td>${token.al_bybit}</td>
-              <td>${token.sat_bybit}</td>
-              <td>${token.al_jupbybit}</td>
-              <td>${token.sat_jupbybit}</td>
+              <td>${token.al_dex < 0.98 ? token.al_dex : ''}</td>
+              <td>${token.sat_dex > 1.02 ? token.sat_dex : ''}</td>
+              <td>${token.al_jup < 0.99 ? token.al_jup : ''}</td>
+              <td>${token.sat_jup > 1.01 ? token.sat_jup : ''}</td>
             </tr>
           `;
         }
@@ -192,9 +160,10 @@ app.get("/", (req, res) => {
   `);
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
 
 
