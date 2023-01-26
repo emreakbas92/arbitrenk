@@ -53,43 +53,55 @@ const tokens = [
   { symbol: "mcrtusdt", contract: "0x4b8285aB433D8f69CB48d5Ad62b415ed1a221e4f-bsc" },
   { symbol: "inrusdt", contract: "0xaB725d0A10C3f24725c89F5765Ae5794a26C1336-bsc" },
   { symbol: "ntusdt", contract: "0xfbcf80ed90856AF0d6d9655F746331763EfDb22c-bsc" },
+  { symbol: "slcusdt", contract: "SLC" },
+  { symbol: "diousdt", contract: "DIO" },
+  { symbol: "zbcusdt", contract: "ZBC" },
+  { symbol: "gmtusdt", contract: "GMT" },
+  { symbol: "auryusdt", contract: "AURY" },
+  { symbol: "gstusdt", contract: "GST" },
+  { symbol: "mplxusdt", contract: "MPLX" },
+  { symbol: "hbbusdt", contract: "HBB" },
+  { symbol: "saousdt", contract: "SAO" },
+  { symbol: "eluusdt", contract: "ELU" },
+  { symbol: "likeusdt", contract: "LIKE" },
+  { symbol: "snsusdt", contract: "SNS" },
   { symbol: "rocousdt", contract: "0xb2a85C5ECea99187A977aC34303b80AcbDdFa208-avalanche" }
 ];
 
 let al, sat;
 setInterval(() => {
   tokens.forEach((token) => {
-    try {
-      // Get the ask and bid prices for the token from Huobi
-      https
-        .get(`https://api.huobi.pro/market/detail/merged?symbol=${token.symbol}`, (res) => {
-          let data = "";
-          res.on("data", (chunk) => {
-            data += chunk;
-          });
-          res.on("end", () => {
-            const json = JSON.parse(data);
-            if(!json.tick || !json.tick.ask[0] || !json.tick.bid[0]) return;
-            const ask = json.tick.ask[0];
-            const bid = json.tick.bid[0];
+    // Get the ask and bid prices for the token from Huobi
+    https.get(`https://api.huobi.pro/market/detail/merged?symbol=${token.symbol}`, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        try {
+          const json = JSON.parse(data);
+          if(!json.tick || !json.tick.ask[0] || !json.tick.bid[0]) return;
+          const ask = json.tick.ask[0];
+          const bid = json.tick.bid[0];
 
-            // Get the price of the token on the BSC network from Dex.guru
-            https
-              .get(`https://api.dex.guru/v1/tokens/${token.contract}`, (res) => {
-                let data = "";
-                res.on("data", (chunk) => {
-                  data += chunk;
-                });
-                res.on("end", () => {
-                  const json = JSON.parse(data);
-                  let price = json.priceUSD;
-                  // Get the price of the token on the BSC network from Jup.ag
-                  https.get(`https://price.jup.ag/v1/price?id=${token.contract}`, (res) => {
-                    let data = "";
-                    res.on("data", (chunk) => {
-                      data += chunk;
-                    });
-                    res.on("end", () => {
+          // Get the price of the token on the BSC network from Dex.guru
+          https.get(`https://api.dex.guru/v1/tokens/${token.contract}`, (res) => {
+            let data = "";
+            res.on("data", (chunk) => {
+              data += chunk;
+            });
+            res.on("end", () => {
+              try {
+                const json = JSON.parse(data);
+                let price = json.priceUSD;
+                // Get the price of the token on the BSC network from Jup.ag
+                https.get(`https://price.jup.ag/v1/price?id=${token.contract}`, (res) => {
+                  let data = "";
+                  res.on("data", (chunk) => {
+                    data += chunk;
+                  });
+                  res.on("end", () => {
+                    try {
                       const json = JSON.parse(data);
                       let jupPrice = json.data.price;
                       // Calculate the ratio of the Huobi ask price to the BSC price
@@ -98,21 +110,27 @@ setInterval(() => {
                       token.sat_dex = price / ask;
                       token.sat_jup = jupPrice / ask;
                       console.log(token);
-                    });
+                    } catch (err) {
+                      console.log("Error: " + err.message);
+                    }
                   });
-               });
-             })
-            .on("error", (err) => {
-             console.log("Error: " + err.message);
-          });
+                }).on("error", (err) => {
+                  console.log("Error: " + err.message);
+                });
+              } catch (err) {
+                console.log("Error: " + err.message);
+              }
+            });
+        }).on("error", (err) => {
+          console.log("Error: " + err.message);
         });
-      })
-     .on("error", (err) => {
-       console.log("Error: " + err.message);
-     });
-  } catch (err) {
-    console.log("Error: " + err.message);
-  }
+      } catch (err) {
+        console.log("Error: " + err.message);
+      }
+    });
+  }).on("error", (err) => {
+  console.log("Error: " + err.message);
+});
 });
 }, 30000);
 
