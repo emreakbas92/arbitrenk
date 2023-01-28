@@ -141,7 +141,6 @@ app.get("/", (req, res) => {
     <table>
       <tr>
         <th>Symbol</th>
-        <th>Contract Address</th>
         <th>BSC/Huobi Bid Ratio</th>
         <th>Huobi/BSC Ask Ratio</th>
         <th>Jup/Huobi Ask Ratio</th>
