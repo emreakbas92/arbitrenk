@@ -26,7 +26,6 @@ const tokens = [
   { symbol: "ktusdt", contract: "0x52da44b5e584f730005dac8d2d2acbdee44d4ba3-bsc" },
   { symbol: "vlxusdt", contract: "0xe9c803f48dffe50180bd5b01dc04da939e3445fc-bsc" },
   { symbol: "inrusdt", contract: "0xab725d0a10c3f24725c89f5765ae5794a26c1336-bsc" },
-  { symbol: "xcnusdt", contract: "0x7324c7C0d95CEBC73eEa7E85CbAac0dBdf88a05b-bsc" },
   { symbol: "dypusdt", contract: "0x961c8c0b1aad0c0b10a51fef6a867e3091bcef17-bsc" },
   { symbol: "fotausdt", contract: "0x0A4E1BdFA75292A98C15870AeF24bd94BFFe0Bd4-bsc" },
   { symbol: "tlosusdt", contract: "0xb6c53431608e626ac81a9776ac3e999c5556717c-bsc" },
