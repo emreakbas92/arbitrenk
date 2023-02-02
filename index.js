@@ -5,6 +5,7 @@ const tokens = [
   { symbol: "abbcusdt", contract: "0xe83cE6bfb580583bd6A62B4Be7b34fC25F02910D-bsc" },
   { symbol: "bbcusdt", contract: "0x37e5da11b6A4DC6d2f7Abe232cDd30B0B8Fc63B1-bsc" },
   { symbol: "bullusdt", contract: "0x9f95e17b2668AFE01F8fbD157068b0a4405Cc08D-polygon" },
+  { symbol: "grvusdt", contract: "0xF33893DE6eB6aE9A67442E066aE9aBd228f5290c-bsc" },  
   { symbol: "voxelusdt", contract: "0xd0258a3fD00f38aa8090dfee343f10A9D4d30D3F-polygon" },
   { symbol: "gcoinusdt", contract: "0x071AC29d569a47EbfFB9e57517F855Cb577DCc4C-polygon" },
   { symbol: "zedusdt", contract: "0x5eC03C1f7fA7FF05EC476d19e34A22eDDb48ACdc-polygon" },
@@ -150,17 +151,41 @@ app.get("/", (req, res) => {
           return `
             <tr>
               <td>${token.symbol}</td>
-              <td>${token.al_dex < 0.98 ? token.al_dex : ''}</td>
-              <td>${token.sat_dex > 1.02 ? token.sat_dex : ''}</td>
-              <td>${token.al_jup < 0.99 ? token.al_jup : ''}</td>
-              <td>${token.sat_jup > 1.01 ? token.sat_jup : ''}</td>
+              <td style="color: red">${token.al_dex}</td>
+              <td style="color: red">${token.sat_dex}</td>
+              <td style="color: red">${token.al_jup}</td>
+              <td style="color: red">${token.sat_jup}</td>
+            </tr>
+          `;
+        } else if (token.al_dex < 0.95 && token.al_jup < 0.95) {
+          return `
+            <tr>
+              <td>${token.symbol}</td>
+              <td style="color: green">${token.al_dex}</td>
+              <td style="color: green">${token.sat_dex}</td>
+              <td style="color: green">${token.al_jup}</td>
+              <td style="color: green">${token.sat_jup}</td>
+            </tr>
+          `;
+        } else {
+          return `
+            <tr>
+              <td>${token.symbol}</td>
+              <td>${token.al_dex}</td>
+              <td>${token.sat_dex}</td>
+              <td>${token.al_jup}</td>
+              <td>${token.sat_jup}</td>
             </tr>
           `;
         }
-        return '';
       }).join('')}
     </table>
   `);
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
 
 
