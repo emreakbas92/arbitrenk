@@ -53,6 +53,11 @@ const tokens = [
   { symbol: "mcrtusdt", contract: "0x4b8285aB433D8f69CB48d5Ad62b415ed1a221e4f-bsc" },
   { symbol: "inrusdt", contract: "0xaB725d0A10C3f24725c89F5765Ae5794a26C1336-bsc" },
   { symbol: "ntusdt", contract: "0xfbcf80ed90856AF0d6d9655F746331763EfDb22c-bsc" },
+  { symbol: "iguusdt", contract: "0x201bC9F242f74C47Bbd898a5DC99cDCD81A21943-bsc" },
+  { symbol: "magicusdt", contract: "0x539bdE0d7Dbd336b79148AA742883198BBF60342-arbitrum" },  
+  { symbol: "gmxusdt", contract: "0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a-arbitrum" },
+  { symbol: "grailusdt", contract: "0x3d9907F9a368ad0a51Be60f7Da3b97cf940982D8-arbitrum" },
+  { symbol: "rdntusdt", contract: "0x0C4681e6C0235179ec3D4F4fc4DF3d14FDD96017-arbitrum" },
   { symbol: "slcusdt", contract: "SLC" },
   { symbol: "diousdt", contract: "DIO" },
   { symbol: "zbcusdt", contract: "ZBC" },
@@ -151,8 +156,8 @@ app.get("/", (req, res) => {
           return `
             <tr>
               <td>${token.symbol}</td>
-              <td style="color:${token.al_dex < 0.95 ? 'green' : 'inherit'}">${token.al_dex < 0.98 ? token.al_dex : ''}</td>
-              <td style="color:${token.sat_dex > 1.05 ? 'red' : 'inherit'}">${token.sat_dex > 1.02 ? token.sat_dex : ''}</td>
+              <td style="color:${token.al_dex < 0.95 ? 'green' : 'inherit'}">${token.al_dex < 0.99 ? token.al_dex : ''}</td>
+              <td style="color:${token.sat_dex > 1.05 ? 'red' : 'inherit'}">${token.sat_dex > 1.01 ? token.sat_dex : ''}</td>
               <td style="color:${token.al_jup < 0.95 ? 'green' : 'inherit'}">${token.al_jup < 0.99 ? token.al_jup : ''}</td>
               <td style="color:${token.sat_jup > 1.05 ? 'red' : 'inherit'}">${token.sat_jup > 1.01 ? token.sat_jup : ''}</td>
             </tr>
