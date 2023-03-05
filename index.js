@@ -76,8 +76,8 @@ const tokens = [
 let al, sat;
 setInterval(() => {
   tokens.forEach((token) => {
-    // Get the ask and bid prices for the token from Kucoin
-    https.get(`https://api.kucoin.com/api/v1/market/stats?symbol=${token.symbol}`, (res) => {
+    // Get the ask and bid prices for the token from Huobi
+    https.get(`https://api.huobi.pro/market/detail/merged?symbol=${token.symbol}`, (res) => {
       let data = "";
       res.on("data", (chunk) => {
         data += chunk;
@@ -85,9 +85,9 @@ setInterval(() => {
       res.on("end", () => {
         try {
           const json = JSON.parse(data);
-          if(!json.data || !json.data.buy || !json.data.sell) return;
-          const ask = json.data.sell;
-          const bid = json.data.buy;
+          if(!json.tick || !json.tick.ask[0] || !json.tick.bid[0]) return;
+          const ask = json.tick.ask[0];
+          const bid = json.tick.bid[0];
 
           // Get the price of the token on the BSC network from Dex.guru
           https.get(`https://api.dex.guru/v1/tokens/${token.contract}`, (res) => {
