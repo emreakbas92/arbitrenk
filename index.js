@@ -100,7 +100,7 @@ setInterval(() => {
                 const json = JSON.parse(data);
                 let price = json.priceUSD;
                 // Get the price of the token on the BSC network from Jup.ag
-                https.get(`https://price.jup.ag/v4/price?ids=${token.contract}`, (res) => {
+                https.get(`https://price.jup.ag/v1/price?id=${token.contract}`, (res) => {
                   let data = "";
                   res.on("data", (chunk) => {
                     data += chunk;
@@ -108,8 +108,8 @@ setInterval(() => {
                   res.on("end", () => {
                     try {
                       const json = JSON.parse(data);
-                      let jupPrice = json.data[token.contract].price;
-                      // Calculate the ratio of the Kucoin ask price to the BSC price
+                      let jupPrice = json.data.price;
+                      // Calculate the ratio of the Huobi ask price to the BSC price
                       token.al_dex = price / bid;
                       token.al_jup = jupPrice / bid;
                       token.sat_dex = price / ask;
