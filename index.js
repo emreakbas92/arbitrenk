@@ -98,7 +98,7 @@ setInterval(() => {
             res.on("end", () => {
               try {
                 const dexData = JSON.parse(data);
-                let dexprice = dexData.priceUSD;
+                const dexPrice = dexData.priceUSD;
                 // Get the price of the token on the BSC network from Jup.ag
                 https.get(`https://price.jup.ag/v4/price?ids=${token.contract}`, (res) => {
                   let data = "";
@@ -108,7 +108,7 @@ setInterval(() => {
                   res.on("end", () => {
                     try {
                       const jupData = JSON.parse(data);
-                      let jupPrice = jupData.data[token.contract].price;
+                      const jupPrice = jupData.data[token.contract].price;
                       // Calculate the ratio of the Kucoin ask price to the BSC price
                       token.al_dex = dexPrice / bid;
                       token.al_jup = jupPrice / bid;
