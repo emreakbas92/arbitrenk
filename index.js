@@ -3,6 +3,7 @@ const https = require('https');
 const app = express();
 const tokens = [
   { symbol: "abbcusdt", contract: "0xe83cE6bfb580583bd6A62B4Be7b34fC25F02910D-bsc" },
+  { symbol: "rabcusdt", contract: "0x24Ef78C7092d255Ed14a0281ac1800C359aF3afe-bsc" },
   { symbol: "bbcusdt", contract: "0x37e5da11b6A4DC6d2f7Abe232cDd30B0B8Fc63B1-bsc" },
   { symbol: "bullusdt", contract: "0x9f95e17b2668AFE01F8fbD157068b0a4405Cc08D-polygon" },
   { symbol: "grvusdt", contract: "0xF33893DE6eB6aE9A67442E066aE9aBd228f5290c-bsc" },  
