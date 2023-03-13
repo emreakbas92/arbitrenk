@@ -163,8 +163,8 @@ app.get("/", (req, res) => {
           return `
             <tr>
               <td>${token.symbol}</td>
-              <td style="color:${token.al_dex < 0.95 ? 'green' : 'inherit'}">${format_number(token.al_dex) < 0.98 ? format_number(token.al_dex) : ''}</td>
-              <td style="color:${token.sat_dex > 1.05 ? 'red' : 'inherit'}">${format_number(token.sat_dex) > 1.02 ? format_number(token.sat_dex) : ''}</td>
+              <td style="color:${token.al_dex < 0.95 ? 'green' : 'inherit'}">${format_number(token.al_dex) < 0.99 ? format_number(token.al_dex) : ''}</td>
+              <td style="color:${token.sat_dex > 1.05 ? 'red' : 'inherit'}">${format_number(token.sat_dex) > 1.01 ? format_number(token.sat_dex) : ''}</td>
               <td style="color:${token.al_jup < 0.95 ? 'green' : 'inherit'}">${format_number(token.al_jup) < 0.99 ? format_number(token.al_jup) : ''}</td>
               <td style="color:${token.sat_jup > 1.05 ? 'red' : 'inherit'}">${format_number(token.sat_jup) > 1.01 ? format_number(token.sat_jup) : ''}</td>
             </tr>
