@@ -141,6 +141,13 @@ setInterval(() => {
 
 
 app.get("/", (req, res) => {
+  function format_number(num) {
+    if (num !== undefined) {
+      return num.toFixed(3);
+    }
+    return '';
+  }
+  
   res.send(`
     <h1>Token List</h1>
     <table>
@@ -156,10 +163,10 @@ app.get("/", (req, res) => {
           return `
             <tr>
               <td>${token.symbol}</td>
-              <td style="color:${'green' if token.al_dex < 0.95 else 'inherit'}">${format_number(token.al_dex) if token.al_dex < 0.99 else ''}</td>
-              <td style="color:${'red' if token.sat_dex > 1.05 else 'inherit'}">${format_number(token.sat_dex) if token.sat_dex > 1.01 else ''}</td>
-              <td style="color:${'green' if token.al_jup < 0.95 else 'inherit'}">${format_number(token.al_jup) if token.al_jup < 0.99 else ''}</td>
-              <td style="color:${'red' if token.sat_jup > 1.05 else 'inherit'}">${format_number(token.sat_jup) if token.sat_jup > 1.01 else ''}</td>
+              <td style="color:${token.al_dex < 0.95 ? 'green' : 'inherit'}">${format_number(token.al_dex) || ''}</td>
+              <td style="color:${token.sat_dex > 1.05 ? 'red' : 'inherit'}">${format_number(token.sat_dex) || ''}</td>
+              <td style="color:${token.al_jup < 0.95 ? 'green' : 'inherit'}">${format_number(token.al_jup) || ''}</td>
+              <td style="color:${token.sat_jup > 1.05 ? 'red' : 'inherit'}">${format_number(token.sat_jup) || ''}</td>
             </tr>
           `;
         }
